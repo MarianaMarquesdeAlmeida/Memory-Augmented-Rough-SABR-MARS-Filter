@@ -5,3 +5,17 @@ __pycache__/
 data/
 outputs/
 scripts/
+
+# Local working artifacts
+.vscode/
+tmp/
+notebooks_comprehensive/
+*.zip
+
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
