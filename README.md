@@ -1,18 +1,19 @@
-# Memory-Augmented Rough-SABR MARS Filter
+# Memory-Augmented Rough-SABR (MARS) Filter
 
-This repository contains the code and thesis-facing notebooks for comparing a
-standard Normal SABR particle filter with a Memory-Augmented Rough-SABR
-particle filter for Bitcoin option surfaces.
+This repository contains the code and analysis notebooks for an MSc thesis on
+sequential filtering of Bitcoin option surfaces. The empirical study compares a
+Markovian SABR particle filter benchmark with a Memory-Augmented Rough-SABR
+particle filter.
 
 The empirical focus is sequential prediction and filtering of Deribit BTC
-option panels. The main comparison is based on paired Normal versus Rough runs
-using the same windows, quote sets, evaluation settings, and random seeds.
+option panels. The main comparison is based on paired Markovian and Rough-SABR
+runs using the same windows, quote sets, evaluation settings, and random seeds.
 
 ## Project Layout
 
 ```text
 .
-|-- notebooks/          Clean notebooks intended for GitHub and thesis review
+|-- notebooks/          Curated analysis notebooks
 |-- src/                Core particle-filter implementations
 |-- data/               Local raw and processed data, not committed
 |-- outputs/            Local model outputs and notebook exports, not committed
@@ -29,24 +30,25 @@ The repository compares two nonlinear state-space models.
 
 | Model | Description |
 |---|---|
-| Normal SABR PF | Markovian SABR particle filter with latent forward, volatility level, correlation, and volatility-of-volatility. |
-| MARS / Rough-SABR PF | Rough-SABR particle filter with additional finite-dimensional memory factors that approximate the rough-volatility kernel. |
+| Markovian SABR PF | SABR particle filter benchmark with latent forward, volatility level, correlation, and volatility-of-volatility. |
+| MARS / Rough-SABR PF | Memory-augmented Rough-SABR particle filter with finite-dimensional memory factors approximating the rough-volatility kernel. |
 
 The main model files are:
 
 | File | Purpose |
 |---|---|
-| `src/normal_sabr_pf.py` | Baseline Normal SABR particle filter. |
+| `src/normal_sabr_pf.py` | Markovian SABR benchmark particle filter. |
 | `src/rough_sabr_pf.py` | Memory-Augmented Rough-SABR particle filter. |
 
-## Clean Notebook Set
+## Analysis Notebooks
 
-These are the notebooks that should be kept in `notebooks/` for GitHub.
+The notebooks in `notebooks/` are organized as a compact, thesis-facing analysis
+suite.
 
 | Notebook | Purpose |
 |---|---|
 | `chapter2_btc_data_descriptive_plots.ipynb` | Descriptive BTC option-data diagnostics used before the filtering analysis. |
-| `predictive_likelihood.ipynb` | Main headline predictive log-likelihood comparison for paired Normal and Rough runs. |
+| `predictive_likelihood.ipynb` | Main headline predictive log-likelihood comparison for paired Markovian and Rough-SABR runs. |
 | `nonoverlapping_window_analysis.ipynb` | Four non-overlapping window comparison of predictive scores and pricing errors. |
 | `predictive_uncertainty_calibration.ipynb` | Predictive interval coverage, interval score, width, and calibration by moneyness. |
 | `filtered_state_summaries.ipynb` | Filtered latent-state summaries and state-path diagnostics. |
@@ -55,12 +57,12 @@ These are the notebooks that should be kept in `notebooks/` for GitHub.
 | `robustness_q160_eval300_analysis.ipynb` | Robustness checks for the q160/eval300 experiment design. |
 | `selected_window_surface_diagnostics.ipynb` | Surface-deterioration diagnostics and the two ATM plots used in the thesis. |
 | `predictive_atm_iv_gap_deterioration_analysis.ipynb` | Focused ATM implied-volatility gap analysis behind deterioration episodes. |
-| `quote_screening_signal_validation.ipynb` | Compact quote-level signal validation, if discussed in the thesis or project notes. |
+| `quote_screening_signal_validation.ipynb` | Compact quote-level signal validation diagnostic. |
 
-## Notebook Boundaries
+## Analysis Scope
 
-The notebook set is deliberately narrow to avoid repeating the same analysis in
-several places.
+The notebook set is kept deliberately narrow so each empirical result has a
+single primary location.
 
 | Topic | Where it belongs |
 |---|---|
@@ -74,9 +76,9 @@ several places.
 | Focused ATM IV gap mechanism | `predictive_atm_iv_gap_deterioration_analysis.ipynb` |
 | Quote-screening signal validation | `quote_screening_signal_validation.ipynb` |
 
-Older exploratory notebooks such as standalone RMSE, state-path, H-robustness,
-pricing-grid, and broad model-comparison notebooks are superseded by the clean
-notebooks above.
+Standalone exploratory RMSE, state-path, H-robustness, pricing-grid, and broad
+model-comparison notebooks have been consolidated into the analysis notebooks
+above.
 
 ## Setup
 
@@ -95,7 +97,7 @@ On Windows PowerShell, activate with:
 pip install -r requirements.txt
 ```
 
-## Data And Outputs
+## Data and Outputs
 
 The raw Deribit option snapshot file is expected locally at:
 
@@ -103,7 +105,7 @@ The raw Deribit option snapshot file is expected locally at:
 data/raw/btc_options_snapshots_5d.csv
 ```
 
-The cleaned notebooks use model outputs from folders such as:
+The analysis notebooks use model outputs from folders such as:
 
 ```text
 outputs/common_eval_q160_eval300/
@@ -115,14 +117,14 @@ outputs/comparisons/
 The notebooks also write small derived tables and figures under
 `outputs/comparisons/`.
 
-## Running A Small Model Test
+## Running a Small Model Test
 
 Run commands from the repository root.
 
-Normal SABR:
+Markovian SABR benchmark:
 
 ```bash
-python src/normal_sabr_pf.py --raw-csv data/raw/btc_options_snapshots_5d.csv --output-dir outputs/normal_sabr_test --start-index 0 --n-timestamps 100 --n-particles 100 --n-mc-paths 128 --n-eval-mc-paths 256 --max-options-per-timestamp 30 --beta 0.7 --log-A-process-sd 0.0 --likelihood-components price --price-likelihood-mode bidask-interval --quote-weighting equal-expiry --price-unit btc --random-seed 123
+python src/normal_sabr_pf.py --raw-csv data/raw/btc_options_snapshots_5d.csv --output-dir outputs/markovian_sabr_test --start-index 0 --n-timestamps 100 --n-particles 100 --n-mc-paths 128 --n-eval-mc-paths 256 --max-options-per-timestamp 30 --beta 0.7 --log-A-process-sd 0.0 --likelihood-components price --price-likelihood-mode bidask-interval --quote-weighting equal-expiry --price-unit btc --random-seed 123
 ```
 
 Memory-Augmented Rough-SABR:
@@ -137,29 +139,15 @@ and multiple random seeds.
 ## Reproducibility Notes
 
 Particle filtering and nested Monte Carlo pricing are stochastic. For model
-comparison, use paired Normal and Rough runs with the same:
+comparison, use paired Markovian and Rough-SABR runs with the same:
 
 | Setting | Why it matters |
 |---|---|
 | timestamps and quote panels | predictive scores must refer to the same observed panels |
-| random seed pairing | reduces Monte Carlo noise in Normal versus Rough differences |
+| random seed pairing | reduces Monte Carlo noise in Markovian versus Rough-SABR differences |
 | likelihood settings | keeps score differences interpretable |
 | particle and evaluation Monte Carlo settings | avoids comparing numerical precision rather than model behaviour |
 | price unit and quote weighting | keeps the likelihood scale consistent |
 
 The thesis comparisons mainly use paired seeds across the selected windows. The
 Monte Carlo grid diagnostic is treated separately.
-
-## Git Workflow
-
-For the curated notebook update, stage only the clean notebook folder, README,
-and Git housekeeping files:
-
-```bash
-git add notebooks README.md .gitignore .gitattributes
-git status
-git commit -m "Add clean thesis analysis notebooks"
-git push
-```
-
-Avoid `git add .` unless you have checked the untracked local files carefully.
