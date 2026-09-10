@@ -97,13 +97,19 @@ pip install -r requirements.txt
 
 ## Data and Outputs
 
-The raw Deribit option snapshot file is expected locally at:
+The empirical data are BTC option quote snapshots from Deribit. Each row
+corresponds to one option contract observed at a capture timestamp, with fields
+such as expiry, strike, option type, bid/ask/mid prices, mark IV, underlying
+price proxy, open interest, and volume.
+
+The raw snapshot file is not committed to the repository. To rerun the notebooks
+or model scripts, place the local data file at:
 
 ```text
 data/raw/btc_options_snapshots_5d.csv
 ```
 
-The analysis notebooks use model outputs from folders such as:
+The analysis notebooks also use generated model outputs from folders such as:
 
 ```text
 outputs/common_eval_q160_eval300/
