@@ -48,16 +48,14 @@ suite.
 | Notebook | Purpose |
 |---|---|
 | `chapter2_btc_data_descriptive_plots.ipynb` | Descriptive BTC option-data diagnostics used before the filtering analysis. |
-| `predictive_likelihood.ipynb` | Main headline predictive log-likelihood comparison for paired Markovian and Rough-SABR runs. |
-| `nonoverlapping_window_analysis.ipynb` | Four non-overlapping window comparison of predictive scores and pricing errors. |
+| `predictive_likelihood.ipynb` | Main four-window predictive log-likelihood comparison for paired Markovian and Rough-SABR runs. |
+| `nonoverlapping_window_analysis.ipynb` | Four-window quote comparability and pricing-error companion analysis. |
 | `predictive_uncertainty_calibration.ipynb` | Predictive interval coverage, interval score, width, and calibration by moneyness. |
 | `filtered_state_summaries.ipynb` | Filtered latent-state summaries and state-path diagnostics. |
-| `particle_stability_numerical_behaviour.ipynb` | ESS, resampling, tempering, and runtime behaviour across windows and seeds. |
+| `particle_stability_numerical_behaviour.ipynb` | ESS, likelihood-tempering, runtime, and quote-workload diagnostics across windows and seeds. |
 | `rough_kernel_lift_diagnostics.ipynb` | Finite rough-kernel lift nodes, weights, approximation error, and ratio plots. |
 | `robustness_q160_eval300_analysis.ipynb` | Robustness checks for the q160/eval300 experiment design. |
 | `selected_window_surface_diagnostics.ipynb` | Surface-deterioration diagnostics and the two ATM plots used in the thesis. |
-| `predictive_atm_iv_gap_deterioration_analysis.ipynb` | Focused ATM implied-volatility gap analysis behind deterioration episodes. |
-| `quote_screening_signal_validation.ipynb` | Compact quote-level signal validation diagnostic. |
 
 ## Analysis Scope
 
@@ -66,19 +64,19 @@ single primary location.
 
 | Topic | Where it belongs |
 |---|---|
-| Headline paired predictive score | `predictive_likelihood.ipynb` |
-| Four-window predictive and pricing comparison | `nonoverlapping_window_analysis.ipynb` |
+| BTC option-data diagnostics | `chapter2_btc_data_descriptive_plots.ipynb` |
+| Filtered latent states | `filtered_state_summaries.ipynb` |
+| Four-window paired predictive score | `predictive_likelihood.ipynb` |
+| Quote comparability and pricing errors | `nonoverlapping_window_analysis.ipynb` |
 | Predictive intervals and moneyness calibration | `predictive_uncertainty_calibration.ipynb` |
-| ESS, resampling, tempering, and runtime | `particle_stability_numerical_behaviour.ipynb` |
+| ESS, likelihood-tempering, runtime, and quote workload | `particle_stability_numerical_behaviour.ipynb` |
 | Kernel-lift numerical approximation | `rough_kernel_lift_diagnostics.ipynb` |
 | Robustness checks | `robustness_q160_eval300_analysis.ipynb` |
 | Surface deterioration and ATM plots | `selected_window_surface_diagnostics.ipynb` |
-| Focused ATM IV gap mechanism | `predictive_atm_iv_gap_deterioration_analysis.ipynb` |
-| Quote-screening signal validation | `quote_screening_signal_validation.ipynb` |
 
-Standalone exploratory RMSE, state-path, H-robustness, pricing-grid, and broad
-model-comparison notebooks have been consolidated into the analysis notebooks
-above.
+Standalone exploratory RMSE, H-robustness, pricing-grid, signal-validation, and
+broad model-comparison notebooks have been removed or consolidated into the
+analysis notebooks above.
 
 ## Setup
 
